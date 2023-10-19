@@ -1,0 +1,13 @@
+For creating frontend
+    npm create vite@4.1.0
+    cd frontend
+    npm i
+
+For creating backend
+    mkdir backend
+    cd backend
+    npm init -y 
+    npm i express
+    npm i --save-dev nodemon
+    npm i elasticsearch
+
