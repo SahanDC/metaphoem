@@ -1,0 +1,9 @@
+.appBar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+  }
+  
+  .content {
+    padding-top: 64px;
+  }

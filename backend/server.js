@@ -36,7 +36,7 @@ app.get('/getAllQueries', (req, res) => {
 
 app.post('/poemNameSearch', async (req, res) => {
     const poem = await req.body.poem_name;
-
+    console.log(req.body)
     client.search({
         index: indexName,
         body: {
@@ -60,12 +60,12 @@ app.post('/sourceSearch', async (req, res) => {
     client.search({
         index: indexName,
         body: {
+            size: 30,
             query: {
                 match: {
                     'source_domain': source,
                 }
             },
-            size: 30,
         }
     }).then((response) => {
         res.json(response.hits.hits)
