@@ -150,7 +150,7 @@ app.get("/searchQuery", async (req, res) => {
     client.search(searchQuery).then((response) => {
         res.json(response.hits.hits)
     }).catch((error) => {
-        res.status(500).send(error)
+        res.status(500).json({ error: "Error retrieving search data" })
     })
 })
 
