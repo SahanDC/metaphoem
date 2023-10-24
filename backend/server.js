@@ -13,7 +13,7 @@ let searchQuery = {
         size: 300,
         query: {
             bool: {
-                should: [],
+                must: [],
             },
         },
     },
@@ -116,8 +116,7 @@ app.get("/searchQuery", async (req, res) => {
     console.log(req.query)
 
     if (poemName) {
-        console.log(poemName)
-        searchQuery.body.query.bool.should.push({
+        searchQuery.body.query.bool.must.push({
             match: {
                 poem_name: poemName
             }
@@ -125,7 +124,7 @@ app.get("/searchQuery", async (req, res) => {
     }
 
     if (sourceDomain) {
-        searchQuery.body.query.bool.should.push({
+        searchQuery.body.query.bool.must.push({
             match: {
                 source_domain: sourceDomain
             }
@@ -133,7 +132,7 @@ app.get("/searchQuery", async (req, res) => {
     }
 
     if (targetDomain) {
-        searchQuery.body.query.bool.should.push({
+        searchQuery.body.query.bool.must.push({
             match: {
                 target_domain: targetDomain
             }
@@ -147,7 +146,7 @@ app.get("/searchQuery", async (req, res) => {
             },
         }
     }
-    // console.log(searchQuery.json)
+    console.log(searchQuery.json)
     client.search(searchQuery).then((response) => {
         res.json(response.hits.hits)
     }).catch((error) => {
