@@ -22,7 +22,7 @@ app.get('/getAllQueries', (req, res) => {
     client.search({
         index: indexName, 
         body: {
-            size: 30,
+            size: 300,
             query:{
                 match_all: {},
             },

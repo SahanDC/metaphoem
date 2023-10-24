@@ -1,24 +1,43 @@
-import React, { useState } from 'react';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
+import React, { useState } from "react";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import {
+  AppBar,
+  CssBaseline,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Toolbar,
+} from "@mui/material";
+import Header from "./Header";
+import { Link } from "react-router-dom";
+
+import "./Header.css";
 
 function Search() {
-  const [poemName, setPoemName] = useState('');
-  const [sourceDomain, setSourceDomain] = useState('');
-  const [targetDomain, setTargetDomain] = useState('');
+  const [poemName, setPoemName] = useState("");
+  const [sourceDomain, setSourceDomain] = useState("");
+  const [targetDomain, setTargetDomain] = useState("");
 
   const handleSearch = () => {
     // Implement your search logic here using the values of poemName, sourceDomain, and targetDomain.
     // You can use these values to perform a search operation, such as an API call or filtering data.
 
-    console.log('Searching with the following values:');
-    console.log('Poem Name:', poemName);
-    console.log('Source Domain:', sourceDomain);
-    console.log('Target Domain:', targetDomain);
+    console.log("Searching with the following values:");
+    console.log("Poem Name:", poemName);
+    console.log("Source Domain:", sourceDomain);
+    console.log("Target Domain:", targetDomain);
   };
 
   return (
     <div>
+      <div className="search">
+        <div className="searchInputs"></div>
+        <div className="dataResults"></div>
+      </div>
       <TextField
         label="Poem Name"
         variant="outlined"

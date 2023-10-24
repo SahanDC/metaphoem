@@ -1,5 +1,4 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useAsyncError } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -11,71 +10,153 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Theme, makeStyles } from '@mui/material/styles';
+import { Paper, TextField } from '@mui/material';
+import Header from './Header';
+import { useEffect, useState } from 'react';
 
 const tableData = [
   {
-    poemName: 'Poem 1',
+    poem_name: 'Poem 1',
     poet: 'Poet 1',
     poemLine: 'Line 1',
     year: '2022',
-    metaphoricalTerm: 'Term 1',
-    sourceDomain: 'Source 1',
-    targetDomain: 'Target 1',
+    metaphorical_term: 'Term 1',
+    source_domain: 'Source 1',
+    target_domain: 'Target 1',
     interpretation: 'Interpretation 1',
   },
   // Add more data as needed
 ];
 
-function HomePage() {
+interface PoemData {
+  poem_name: string;
+  poet: string;
+  year: number;
+  metaphorical_term: string;
+  source_domain: string;
+  target_domain: string;
+  interpretation: string;
+}
+
+function Search() {
+  const [poem_name, set_poem_name] = useState('');
+  const [source_domain, set_source_domain] = useState('');
+  const [target_domain, set_target_domain] = useState('');
+
+  const handleSearch = () => {
+    console.log('Searching with the following values:');
+    console.log('Poem Name:', poem_name);
+    console.log('Source Domain:', source_domain);
+    console.log('Target Domain:', target_domain);
+  };
 
   return (
     <div>
-      <AppBar className="appBar">
-        <Toolbar>
-          <Typography variant="h6" style={{ flex: 1 }}>
-            Home
-          </Typography>
-          <Button component={Link} to="/search" color="inherit">
-            Search
-          </Button>
-          <Button component={Link} to="/add" color="inherit">
-            Add
-          </Button>
-        </Toolbar>
-      </AppBar>
+      <Header />
+
+      <div className='search'>
+        <div className="searchInputs">
+        
+        </div>
+        <div className="dataResults">
+
+        </div>
+      </div>
+      <TextField
+        label="Poem Name"
+        variant="outlined"
+        value={poem_name}
+        onChange={(e) => set_poem_name(e.target.value)}
+        fullWidth
+        margin="normal"
+      />
+
+      <TextField
+        label="Source Domain"
+        variant="outlined"
+        value={source_domain}
+        onChange={(e) => set_source_domain(e.target.value)}
+        fullWidth
+        margin="normal"
+      />
+
+      <TextField
+        label="Target Domain"
+        variant="outlined"
+        value={target_domain}
+        onChange={(e) => set_target_domain(e.target.value)}
+        fullWidth
+        margin="normal"
+      />
+
+      <Button variant="contained" color="primary" onClick={handleSearch}>
+        Search
+      </Button>
+    </div>
+  );
+}
+
+
+function SearchTable({ dataJson }: { dataJson: PoemData[] }) {
+  return (
+    <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Poem Name</TableCell>
+            <TableCell align="right">Poet</TableCell>
+            <TableCell align="right">Year</TableCell>
+            <TableCell align="right">Metaphorical Term</TableCell>
+            <TableCell align="right">Source Domain</TableCell>
+            <TableCell align="right">Target Domain</TableCell>
+            <TableCell align="right">Interpretation</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {dataJson.map((row, index) => (
+            <TableRow
+              key={index}
+              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            >
+              <TableCell>{row.poem_name}</TableCell>
+              <TableCell align="right">{row.poet}</TableCell>
+              <TableCell align="right">{row.year}</TableCell>
+              <TableCell align="right">{row.metaphorical_term}</TableCell>
+              <TableCell align="right">{row.source_domain}</TableCell>
+              <TableCell align="right">{row.target_domain}</TableCell>
+              <TableCell align="right">{row.interpretation}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}
+
+function HomePage() {
+
+  const [data_file, set_data_file] = useState([]);
+  const [poem_name, set_poem_name] = useState("");
+  const [source_domain, set_source_domain] = useState("");
+  const [target_domain, set_target_domain] = useState("");
+
+  useEffect(() => {
+    fetch("http://localhost:3000/getAllQueries").then((response) => response.json())
+    .then((data) => {
+      set_data_file(data.map((item: any) => item._source));
+      console.log(data);
+  }).catch((error) => console.log("Error in Get ALl Queries:", error))
+  }, []);
+
+  return (
+    <div>
+      
+      <Header />
+
+      <Search />
 
       <Container>
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Poem Name</TableCell>
-                <TableCell>Poet</TableCell>
-                <TableCell>Poem Line</TableCell>
-                <TableCell>Year</TableCell>
-                <TableCell>Metaphorical Term</TableCell>
-                <TableCell>Source Domain</TableCell>
-                <TableCell>Target Domain</TableCell>
-                <TableCell>Interpretation</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {tableData.map((row, index) => (
-                <TableRow key={index}>
-                  <TableCell>{row.poemName}</TableCell>
-                  <TableCell>{row.poet}</TableCell>
-                  <TableCell>{row.poemLine}</TableCell>
-                  <TableCell>{row.year}</TableCell>
-                  <TableCell>{row.metaphoricalTerm}</TableCell>
-                  <TableCell>{row.sourceDomain}</TableCell>
-                  <TableCell>{row.targetDomain}</TableCell>
-                  <TableCell>{row.interpretation}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+       <SearchTable dataJson={data_file} />
       </Container>
     </div>
   );

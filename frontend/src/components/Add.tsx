@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Header from "./Header";
+import { Link } from "react-router-dom";
+import { AppBar, CssBaseline, Toolbar } from "@mui/material";
 
 function Add() {
   const [poemData, setPoemData] = useState({
@@ -26,6 +29,21 @@ function Add() {
 
   return (
     <div>
+      <CssBaseline />
+      <AppBar className="appBar">
+        <Toolbar>
+          <Button component={Link} to="/" color="inherit">
+            Home
+          </Button>
+          <Button component={Link} to="/add" color="inherit">
+            Add
+          </Button>
+          <Button component={Link} to="/search" color="inherit">
+            About
+          </Button>
+        </Toolbar>
+      </AppBar>
+      
       <TextField
         name="poemName"
         label="Poem Name"
