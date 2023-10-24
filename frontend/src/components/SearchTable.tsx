@@ -1,5 +1,4 @@
 import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
-import React from "react";
 
 interface PoemData {
   poem_name: string;
@@ -13,9 +12,14 @@ interface PoemData {
   interpretation: string;
 }
 
+const tableContainerStyle = {
+  backgroundColor: 'F0f8FF',
+};
+
+
 function SearchTable({ dataJson }: { dataJson: PoemData[] }) {
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} style={tableContainerStyle}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>

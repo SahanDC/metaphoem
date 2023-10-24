@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Container, Stack, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import ClearIcon from "@mui/icons-material/Clear";
 import NavBar from "./NavBar";
 import SearchTable from "./SearchTable";
 
@@ -11,13 +12,21 @@ function Search() {
   const [target_domain, set_target_domain] = useState("");
 
   const searchInputs = () => {
-    fetch(`http://localhost:3000/searchQuery?poem_name=${poem_name}&source_domain=${source_domain}&target_domain=${target_domain}`).then(
-      (response) => response.json()).then(
-        (data) => {
-          // console.log(data)
-          set_data_file(data.map((item: any) => item._source));
-        }
-      ).catch((error) => console.error("Error: ", error))
+    fetch(
+      `http://localhost:3000/searchQuery?poem_name=${poem_name}&source_domain=${source_domain}&target_domain=${target_domain}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        // console.log(data)
+        set_data_file(data.map((item: any) => item._source));
+      })
+      .catch((error) => console.error("Error: ", error));
+  };
+
+  const clearInputs = () => {
+    set_poem_name("");
+    set_source_domain("");
+    set_target_domain("");
   };
 
   useEffect(() => {
@@ -35,7 +44,7 @@ function Search() {
         <main>
           <Container fixed>
             <Stack
-              sx={{ pt: 4 }}
+              sx={{ pt: 4, pb:4}}
               direction="column"
               spacing={5}
               justifyContent="center"
@@ -78,11 +87,19 @@ function Search() {
                 >
                   Search
                 </Button>
+                <Button
+                  variant="contained"
+                  startIcon={<ClearIcon />}
+                  sx={{ width: "350px" }}
+                  onClick={clearInputs}
+                >
+                  Clear
+                </Button>
               </Stack>
-              {/* <MetaphorSearchResultTable dataJson={backendData} /> */}
             </Stack>
+            
+            <SearchTable dataJson={data_file} />
           </Container>
-          <SearchTable dataJson={data_file} />
         </main>
       </form>
     </div>

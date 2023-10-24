@@ -1,4 +1,3 @@
-import React from "react";
 import { AppBar, Button, CssBaseline, Stack, Toolbar, Typography } from "@mui/material";
 
 function NavBar() {
