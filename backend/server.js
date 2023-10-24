@@ -7,6 +7,18 @@ const port = 3000
 
 const indexName = 'metaphoem'
 
+let searchQuery = {
+    index: indexName,
+    body: {
+        size: 300,
+        query: {
+            bool: {
+                should: [],
+            },
+        },
+    },
+}
+
 const client = new elasticSearch.Client({
     host: 'https://goutrjxh6y:7wn2gpw4mv@university-of-moratu-8304576696.ap-southeast-2.bonsaisearch.net:443',
 })
@@ -103,20 +115,9 @@ app.get("/searchQuery", async (req, res) => {
 
     console.log(req.query)
 
-    let searchQueryBody = {
-        index: indexName,
-        body: {
-            size: 300,
-            query: {
-                bool: {
-                    must: [],
-                },
-            },
-        },
-    }
-
     if (poemName) {
-        searchQueryBody.body.query.bool.must.push({
+        console.log(poemName)
+        searchQuery.body.query.bool.should.push({
             match: {
                 poem_name: poemName
             }
@@ -124,7 +125,7 @@ app.get("/searchQuery", async (req, res) => {
     }
 
     if (sourceDomain) {
-        searchQueryBody.body.query.bool.must.push({
+        searchQuery.body.query.bool.should.push({
             match: {
                 source_domain: sourceDomain
             }
@@ -132,24 +133,22 @@ app.get("/searchQuery", async (req, res) => {
     }
 
     if (targetDomain) {
-        searchQueryBody.body.query.bool.must.push({
+        searchQuery.body.query.bool.should.push({
             match: {
                 target_domain: targetDomain
             }
         })
     }
 
-    // if (!poemName && !sourceDomain && !targetDomain) {
-    if (searchQueryBody.body.query.bool.must.length == 0) {
-        
-        searchQueryBody.body.query = {
+    if (!poemName && !sourceDomain && !targetDomain) {
+        searchQuery.body.query = {
             match: {
                 metaphor_count: "1"
             },
         }
     }
-    console.log(searchQueryBody.json)
-    client.search(searchQueryBody).then((response) => {
+    // console.log(searchQuery.json)
+    client.search(searchQuery).then((response) => {
         res.json(response.hits.hits)
     }).catch((error) => {
         res.status(500).send(error)

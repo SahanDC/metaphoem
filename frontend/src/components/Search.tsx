@@ -10,6 +10,16 @@ function Search() {
   const [source_domain, set_source_domain] = useState("");
   const [target_domain, set_target_domain] = useState("");
 
+  const searchInputs = () => {
+    fetch(`http://localhost:3000/searchQuery?poem_name=${poem_name}&source_domain=${source_domain}&target_domain=${target_domain}`).then(
+      (response) => response.json()).then(
+        (data) => {
+          console.log(data)
+          set_data_file(data.map((item: any) => item._source));
+        }
+      ).catch((error) => console.error("Error: ", error))
+  };
+
   useEffect(() => {
     fetch("http://localhost:3000/getAllQueries")
       .then((response) => response.json())
@@ -41,30 +51,30 @@ function Search() {
                   id="poem-name-search"
                   label="Poem Name"
                   variant="outlined"
-                  // value={metaphorQuery}
-                  // onChange={(e) => setMetaphorQuery(e.target.value)}
+                  value={poem_name}
+                  onChange={(event) => set_poem_name(event.target.value)}
                 />
                 <TextField
                   fullWidth
                   id="source-search"
                   label="Source Domain"
                   variant="outlined"
-                  // value={meaningQuery}
-                  // onChange={(e) => setMeaningQuery(e.target.value)}
+                  value={source_domain}
+                  onChange={(event) => set_source_domain(event.target.value)}
                 />
                 <TextField
                   fullWidth
                   id="target-search"
                   label="Target Domain"
                   variant="outlined"
-                  // value={meaningQuery}
-                  // onChange={(e) => setMeaningQuery(e.target.value)}
+                  value={target_domain}
+                  onChange={(event) => set_target_domain(event.target.value)}
                 />
                 <Button
                   variant="contained"
                   startIcon={<SearchIcon />}
                   sx={{ width: "350px" }}
-                  // onClick={handleSearch}
+                  onClick={searchInputs}
                 >
                   Search
                 </Button>
