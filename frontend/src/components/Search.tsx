@@ -14,7 +14,7 @@ function Search() {
     fetch(`http://localhost:3000/searchQuery?poem_name=${poem_name}&source_domain=${source_domain}&target_domain=${target_domain}`).then(
       (response) => response.json()).then(
         (data) => {
-          console.log(data)
+          // console.log(data)
           set_data_file(data.map((item: any) => item._source));
         }
       ).catch((error) => console.error("Error: ", error))
