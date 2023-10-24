@@ -1,73 +1,80 @@
-import React, { useState } from "react";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import {
-  AppBar,
-  CssBaseline,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Toolbar,
-} from "@mui/material";
-import Header from "./Header";
-import { Link } from "react-router-dom";
-
-import "./Header.css";
+import React, { useEffect, useState } from "react";
+import { Button, Container, Stack, TextField } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import NavBar from "./NavBar";
+import SearchTable from "./SearchTable";
 
 function Search() {
-  const [poemName, setPoemName] = useState("");
-  const [sourceDomain, setSourceDomain] = useState("");
-  const [targetDomain, setTargetDomain] = useState("");
+  const [data_file, set_data_file] = useState([]);
+  const [poem_name, set_poem_name] = useState("");
+  const [source_domain, set_source_domain] = useState("");
+  const [target_domain, set_target_domain] = useState("");
 
-  const handleSearch = () => {
-    // Implement your search logic here using the values of poemName, sourceDomain, and targetDomain.
-    // You can use these values to perform a search operation, such as an API call or filtering data.
-
-    console.log("Searching with the following values:");
-    console.log("Poem Name:", poemName);
-    console.log("Source Domain:", sourceDomain);
-    console.log("Target Domain:", targetDomain);
-  };
-
+  useEffect(() => {
+    fetch("http://localhost:3000/getAllQueries")
+      .then((response) => response.json())
+      .then((data) => {
+        set_data_file(data.map((item: any) => item._source));
+      })
+      .catch((error) => console.log("Error in Get ALl Queries:", error));
+  }, []);
   return (
     <div>
-      <div className="search">
-        <div className="searchInputs"></div>
-        <div className="dataResults"></div>
-      </div>
-      <TextField
-        label="Poem Name"
-        variant="outlined"
-        value={poemName}
-        onChange={(e) => setPoemName(e.target.value)}
-        fullWidth
-        margin="normal"
-      />
-
-      <TextField
-        label="Source Domain"
-        variant="outlined"
-        value={sourceDomain}
-        onChange={(e) => setSourceDomain(e.target.value)}
-        fullWidth
-        margin="normal"
-      />
-
-      <TextField
-        label="Target Domain"
-        variant="outlined"
-        value={targetDomain}
-        onChange={(e) => setTargetDomain(e.target.value)}
-        fullWidth
-        margin="normal"
-      />
-
-      <Button variant="contained" color="primary" onClick={handleSearch}>
-        Search
-      </Button>
+      <NavBar />
+      <form noValidate autoComplete="off">
+        <main>
+          <Container fixed>
+            <Stack
+              sx={{ pt: 4 }}
+              direction="column"
+              spacing={5}
+              justifyContent="center"
+            >
+              <Stack
+                sx={{ pt: 4 }}
+                direction="row"
+                spacing={3}
+                justifyContent="center"
+              >
+                <TextField
+                  fullWidth
+                  id="poem-name-search"
+                  label="Poem Name"
+                  variant="outlined"
+                  // value={metaphorQuery}
+                  // onChange={(e) => setMetaphorQuery(e.target.value)}
+                />
+                <TextField
+                  fullWidth
+                  id="source-search"
+                  label="Source Domain"
+                  variant="outlined"
+                  // value={meaningQuery}
+                  // onChange={(e) => setMeaningQuery(e.target.value)}
+                />
+                <TextField
+                  fullWidth
+                  id="target-search"
+                  label="Target Domain"
+                  variant="outlined"
+                  // value={meaningQuery}
+                  // onChange={(e) => setMeaningQuery(e.target.value)}
+                />
+                <Button
+                  variant="contained"
+                  startIcon={<SearchIcon />}
+                  sx={{ width: "350px" }}
+                  // onClick={handleSearch}
+                >
+                  Search
+                </Button>
+              </Stack>
+              {/* <MetaphorSearchResultTable dataJson={backendData} /> */}
+            </Stack>
+          </Container>
+          <SearchTable dataJson={data_file} />
+        </main>
+      </form>
     </div>
   );
 }

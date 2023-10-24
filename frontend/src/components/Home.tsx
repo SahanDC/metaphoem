@@ -1,29 +1,30 @@
-import { Link, useAsyncError } from 'react-router-dom';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import { Paper, TextField } from '@mui/material';
-import Header from './Header';
-import { useEffect, useState } from 'react';
+import { Link, useAsyncError } from "react-router-dom";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import Button from "@mui/material/Button";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import { CssBaseline, Paper, TextField } from "@mui/material";
+// import Header from './Header';
+import { useEffect, useState } from "react";
+import NavBar from "./NavBar";
 
 const tableData = [
   {
-    poem_name: 'Poem 1',
-    poet: 'Poet 1',
-    poemLine: 'Line 1',
-    year: '2022',
-    metaphorical_term: 'Term 1',
-    source_domain: 'Source 1',
-    target_domain: 'Target 1',
-    interpretation: 'Interpretation 1',
+    poem_name: "Poem 1",
+    poet: "Poet 1",
+    poemLine: "Line 1",
+    year: "2022",
+    metaphorical_term: "Term 1",
+    source_domain: "Source 1",
+    target_domain: "Target 1",
+    interpretation: "Interpretation 1",
   },
   // Add more data as needed
 ];
@@ -52,11 +53,9 @@ function Search() {
 
   return (
     <div>
-      <Header />
-
       <div className='search'>
         <div className="searchInputs">
-        
+
         </div>
         <div className="dataResults">
 
@@ -96,7 +95,6 @@ function Search() {
   );
 }
 
-
 function SearchTable({ dataJson }: { dataJson: PoemData[] }) {
   return (
     <TableContainer component={Paper}>
@@ -133,26 +131,25 @@ function SearchTable({ dataJson }: { dataJson: PoemData[] }) {
   );
 }
 
-function HomePage() {
-
+function Home() {
   const [data_file, set_data_file] = useState([]);
   const [poem_name, set_poem_name] = useState("");
   const [source_domain, set_source_domain] = useState("");
   const [target_domain, set_target_domain] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:3000/getAllQueries").then((response) => response.json())
-    .then((data) => {
-      set_data_file(data.map((item: any) => item._source));
-      console.log(data);
-  }).catch((error) => console.log("Error in Get ALl Queries:", error))
+    fetch("http://localhost:3000/getAllQueries")
+      .then((response) => response.json())
+      .then((data) => {
+        set_data_file(data.map((item: any) => item._source));
+        console.log(data);
+      })
+      .catch((error) => console.log("Error in Get ALl Queries:", error));
   }, []);
 
   return (
     <div>
-      
-      <Header />
-
+      <NavBar />
       <Search />
 
       <Container>
@@ -162,4 +159,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default Home;

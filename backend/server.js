@@ -8,7 +8,7 @@ const port = 3000;
 const indexName = 'metaphoem'
 
 const client = new elasticSearch.Client({
-    host: 'http://localhost:9200',
+    host: 'https://goutrjxh6y:7wn2gpw4mv@university-of-moratu-8304576696.ap-southeast-2.bonsaisearch.net:443',
 })
 
 app.use(express.json())
@@ -24,7 +24,9 @@ app.get('/getAllQueries', (req, res) => {
         body: {
             size: 300,
             query:{
-                match_all: {},
+                "match": {
+                    "metaphor_count": "1"
+                },
             },
         },
     }).then((response) => {

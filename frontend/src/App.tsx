@@ -1,6 +1,6 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Main from "./components/Main";
+import Home from "./components/Home";
 import Search from "./components/Search";
 import Add from "./components/Add";
 
@@ -9,9 +9,9 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-            <Route path="/" element={<Main />} index />
-            <Route path="Search" element={<Search />} />
-            <Route path="Add" element={<Add />} />
+          <Route path="/" element={<Home />} index />
+          <Route path="Search" element={<Search />} />
+          <Route path="Add" element={<Add />} />
         </Routes>
       </BrowserRouter>
     </div>
